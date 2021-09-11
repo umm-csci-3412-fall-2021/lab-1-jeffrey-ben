@@ -1,10 +1,6 @@
 #!/usr/bin/bash
 
-cd $1 || exit
-
-cd var || exit
-
-cd log || exit
+cd "$1"/var/log || exit
 
 
 cat * > file_to_process.txt
