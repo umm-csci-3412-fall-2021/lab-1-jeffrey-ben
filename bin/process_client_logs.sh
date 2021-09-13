@@ -3,8 +3,7 @@
 cd "$1"/var/log || exit
 
 
-cat ./* > file_to_process.txt
+cat ./* | awk 'match($0, /([A-Z]\w+ [0-9]+) ([0-9]+):[0-9]+:[0-9]+ [A-Za-z]\w+ sshd\[[0-9]+\]: Failed password .* ([a-zA-Z]\w*) from ([0-9]+.+) port [0-9]+ ssh2/, arr) {print arr[1] " " arr[2] " " arr[3] " " arr[4]}' > failed_login_data.txt
 
-awk 'match($0, /([A-Z]\w+) (\d\d) (\d\d):\d\d:\d\d [A-Za-z]\w+ sshd\[\d\d\d\d\d\]: Failed password for (?:invalid user )?([a-zA-Z]\w+) from (\d+.\d+.\d+.\d+) port \d+ ssh2/, groups) {print groups[1] groups[2] groups[3] groups[4] groups[5] }' file_to_process.txt > failed_login_data.txt
 
 mv failed_login_data.txt ../../
