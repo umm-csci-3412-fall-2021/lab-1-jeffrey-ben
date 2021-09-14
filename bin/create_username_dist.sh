@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 
-beginningdir="$(pwd)"
+
 temp_file="$(mktemp /tmp/temp_file.XXXXXXXXX)"
 startd="$(pwd)"
 
@@ -14,7 +14,7 @@ cd "$1" || exit
 #Arranges them in order of how many occur in file
 #Uses awk to print the 1st and 2nd column into the html format
 #Pushes it into the temp file
-cat */failed_login_data.txt | awk '{ print $4 }' | sort | uniq -c | awk '{ print "data.addRow([\x27"$2"\x27, "$1"]);"}' > "$temp_file"
+cat ./*/failed_login_data.txt | awk '{ print $4 }' | sort | uniq -c | awk '{ print "data.addRow([\x27"$2"\x27, "$1"]);"}' > "$temp_file"
 
 
 
