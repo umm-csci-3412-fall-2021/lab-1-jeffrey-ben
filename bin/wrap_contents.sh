@@ -1,11 +1,8 @@
 #!/usr/bin/bash
 
-#Assigns variable to middle file (first argument)
 var_middle=$1
 
-#Identifies desired footer and header in directory (second argument)
-var_footer=$(find . -name "$2*_footer*")
-var_header=$(find . -name "$2*_header*")
+var_footer="$2_footer.html"
+var_header="$2_header.html"
 
-#Concatenates all into new file (third argument)
 cat "$var_header" "$var_middle" "$var_footer" > "$3"
