@@ -18,7 +18,7 @@ cd "$1" || exit
 #Pushes it into the temp file
 cat ./*/failed_login_data.txt | awk '{ print $5 }' | sort > "$temp_file"
 
-sort "$startd/etc/country_IP.txt" |  join "$temp_file" - | awk '{ print $2 }' | uniq -c > "$temp_file_1" 
+sort "$startd/etc/country_IP_map.txt" |  join "$temp_file" - | awk '{ print $2 }' | uniq -c | awk '{ print "data.addRow([\x27"$2"\x27, "$1"]);"}' > "$temp_file_1" 
 
 cd "$startd" || exit
 
@@ -27,5 +27,5 @@ cd "$startd" || exit
 
 
 #Remove temp file
-#rm "$temp_file"
-#rm "$temp_file_1"
+rm "$temp_file"
+rm "$temp_file_1"
