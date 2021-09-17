@@ -4,7 +4,6 @@
 
 
 temp_file="$(mktemp /tmp/temp_file.XXXXXXXXX)"
-temp_file_1="$(mktemp /tmp/temp_file.XXXXXXXXX)"
 startd="$(pwd)"
 
 #Goes into arguement file
@@ -15,17 +14,30 @@ cd "$1" || exit
 #Sorts it
 #Arranges them in order of how many occur in file
 #Uses awk to print the 5th column into the html format
-#Pushes it into the temp file
-cat ./*/failed_login_data.txt | awk '{ print $5 }' | sort > "$temp_file"
+#Pushes it into the temp_IP file
+cat ./*/failed_login_data.txt | awk '{ print $5 }' | sort > temp_IP.txt
 
-sort "$startd/etc/country_IP.txt" |  join "$temp_file" - | awk '{ print $2 }' | uniq -c > "$temp_file_1" 
+#Gets the IP map file and sorts it
+#Then moves it into a temperary file
+sort "$startd"/etc/country_IP_map.txt > country_IP_map_sorted.txt
+
+#Joins the two files together
+#Prints the desired column
+#Sorts it and enumerates the recurring instances
+#Prints it all and moves it into the temp folder
+join temp_IP.txt country_IP_map_sorted.txt | awk '{print $2}' | sort | uniq -c | awk '{ print "data.addRow([\x27"$2"\x27, "$1"]);"}' > "$temp_file"
+
+#Removes uneeded, previous files
+rm temp_IP.txt
+rm country_IP_map_sorted.txt
 
 cd "$startd" || exit
 
 #Run wrap contents
-./bin/wrap_contents.sh "$temp_file_1" html_components/country_dist "$1"/country_dist.html
+./bin/wrap_contents.sh "$temp_file" html_components/country_dist "$1"/country_dist.html
 
 
-#Remove temp file
-#rm "$temp_file"
-#rm "$temp_file_1"
+#Removes unneccessary files
+rm "$temp_file"
+
+
