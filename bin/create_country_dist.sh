@@ -31,6 +31,7 @@ join temp_IP.txt country_IP_map_sorted.txt | awk '{print $2}' | sort | uniq -c |
 rm temp_IP.txt
 rm country_IP_map_sorted.txt
 
+
 cd "$startd" || exit
 
 #Run wrap contents
@@ -39,5 +40,4 @@ cd "$startd" || exit
 
 #Removes unneccessary files
 rm "$temp_file"
-
 
